@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello! I am Demi Chrissa Marie Cadelinia and this is my 2nd Assignment Task as of September 11, 2025.");
+            Console.WriteLine("Hello! I am Demi Chrissa Marie Cadelinia and this is my 2nd Assignment Task as of September 12, 2025.");
             Console.WriteLine();
             Console.WriteLine("Here are the following numbers in all three bases:");
             Console.WriteLine();
@@ -19,7 +19,7 @@
             Console.WriteLine("Decimal: 100   »   Binary: 01100100   »   Hex: 64");
             Console.WriteLine("Decimal: 255   »   Binary: 11111111   »   Hex: FF");
             Console.WriteLine();
-            Console.WriteLine("Done on September 11, 2025. Goodbye, and thank you for checking my simple code assignment!");
+            Console.WriteLine("Done on September 12, 2025. Goodbye, and thank you for checking my simple code assignment!");
         }
     }
 }
