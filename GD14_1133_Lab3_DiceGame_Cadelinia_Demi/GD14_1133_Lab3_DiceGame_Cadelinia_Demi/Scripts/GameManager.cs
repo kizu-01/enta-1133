@@ -20,28 +20,19 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             Console.WriteLine("∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘");
             Console.WriteLine();
 
-            // Dice rolls for 4 different sided dice
+            // Dice rolls for 4 multiple dice
             DieRoller dice = new DieRoller();
-            
-            int d6 = dice.Roll(6);
-            int d8 = dice.Roll(8);
-            int d12 = dice.Roll(12);
-            int d20 = dice.Roll(20);
 
             Console.WriteLine("Let's Roll!");
             Console.WriteLine();
 
-            Console.WriteLine($"D6 Rolled: {d6}");
-            Console.WriteLine($"D8 Rolled: {d8}");
-            Console.WriteLine($"D12 Rolled: {d12}");
-            Console.WriteLine($"D20 Rolled: {d20}");
+            int total = dice.RollAll();
 
-            // Add all the rolls
-            int total = d6 + d8 + d12 + d20;
+            // Add the overall sum of rolls
             Console.WriteLine();
             Console.WriteLine($"Total Score: {total}");
             Console.WriteLine();
-
+            
             Console.WriteLine("∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘");
             Console.WriteLine();
 
