@@ -14,13 +14,13 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             Console.WriteLine("∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘");
             Console.WriteLine();
 
-            Console.WriteLine("Welcome to The Dice Game! This is made by Demi Cadelinia as of September 17, 2025.");
+            Console.WriteLine("Welcome to The Dice Game! This is made by Demi Cadelinia as of September 18, 2025.");
             Console.WriteLine();
 
             Console.WriteLine("∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘-∘");
             Console.WriteLine();
 
-            // Dice rolls
+            // Dice rolls for 4 different sided dice
             DieRoller dice = new DieRoller();
             
             int d6 = dice.Roll(6);
@@ -46,15 +46,15 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             Console.WriteLine();
 
             // Generate random numbers for operator examples
-            Random rand = new Random();
+            Random rd = new Random();
 
-            int a = rand.Next(1, 11);
-            int b = rand.Next(1, 11);
+            int a = rd.Next(1, 11);
+            int b = rd.Next(1, 11);
             
-            // For increment
+            // For increment example value
             int c = a;
 
-            // For decrement
+            // For decrement example value
             int d = b;
 
             // For division to get decimal answers

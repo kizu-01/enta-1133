@@ -14,7 +14,7 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
         // Roll a die with the given sides
         internal int Roll(int sides)
         {
-            return rd.Next(1, sides + 1);
+            return rd.Next(1, sides + 1);   // Shortened names and implented sides variable for efficiency
         }
     }
 }
