@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -111,7 +112,6 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             // Show final results
             Outro();
         }
-        
         // Show welcome message
         private void FullIntro()
         {
