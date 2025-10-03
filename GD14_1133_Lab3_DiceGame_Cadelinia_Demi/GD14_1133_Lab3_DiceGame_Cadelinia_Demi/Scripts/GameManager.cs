@@ -245,25 +245,6 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             return selectedDie;
         }
 
-        private void DecideWinner(int playerRoll, int compRoll, string condition)
-        {
-            bool playerWins = (condition == "higher" && playerRoll > compRoll) ||
-                      (condition == "lower" && playerRoll < compRoll);
-
-            if (playerWins)
-            {
-                Helper.Typewrite($"{player.Name} wins this round!");
-                player.AddPoint();
-            }
-            else
-            {
-                Helper.Typewrite($"{computer.Name} wins this round!");
-                computer.AddPoint();
-            }
-
-            Console.WriteLine();
-        }
-
         private void Outro()
         {
             // Score result
