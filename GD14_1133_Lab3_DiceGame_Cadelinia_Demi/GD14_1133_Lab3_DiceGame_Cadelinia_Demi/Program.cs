@@ -17,7 +17,10 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi
                 if (!InputHandler.GetYesNo("Do you want to play again? [Yes/No]"))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Until then, mortal. Farewell!");
+                    
+                    // Goodbye message
+                    Console.WriteLine();
+                    Helper.Typewrite("The Chance thanks you for playing DI3 FOR A CHANCE. Until then, mortal. Farewell!");
                     break;
                 }
             }

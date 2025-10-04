@@ -189,7 +189,7 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             if (!InputHandler.GetYesNo("Are you ready to play? [Yes/No]"))
             {
                 Console.WriteLine();
-                Console.WriteLine("Until then, mortal. Farewell!");
+                Console.WriteLine("The Chance thanks you for playing DI3 FOR A CHANCE. Until then, mortal. Farewell!");
                 Environment.Exit(0);
             }
 
@@ -261,9 +261,8 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             else
                 Helper.Typewrite("It’s a DRAW!");
 
-            // Goodbye message
             Console.WriteLine();
-            Helper.Typewrite("Goodbye, mortal. The Chance thanks you for your service in playing DI3 FOR A CHANCE. Until next time!");
+            Console.WriteLine("════════════════════════════════════════════════════════════════════════════════");
             Console.WriteLine();
         }
     }
