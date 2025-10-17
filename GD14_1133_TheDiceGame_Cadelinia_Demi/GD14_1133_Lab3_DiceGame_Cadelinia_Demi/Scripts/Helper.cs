@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
 {
-    internal static class Helper
+    internal class Helper
     {
         /// <summary>
-        /// Typewriter effect
+        /// Prints text with typewriter effect for smooth transitions
         /// </summary>
-        public static void Typewrite(string text, int delay = 12)
+        public static void Typewrite(string text, int delay = 15)
         {
             foreach (char c in text)
             {
@@ -22,11 +22,10 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
         }
 
         /// <summary>
-        /// Pause until Enter for clean prompt
+        /// Clean "Press Enter to continue" prompt
         /// </summary>
         public static void Pause()
         {
-            Console.WriteLine();
             Console.WriteLine("- Press Enter to continue -");
             Console.ReadLine();
         }

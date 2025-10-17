@@ -6,27 +6,24 @@ using System.Threading.Tasks;
 
 namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
 {
-    internal static class InputHandler
+    internal class InputHandler
     {
         /// <summary>
-        /// Ask yes/no and return bool. Keeps looping until user types yes or no
-        /// Displays ">> " prompt and accepts yes/no
-        /// If message is provided, it prints it first
+        /// Gets a Yes/No response with retry loop
         /// </summary>
         public static bool GetYesNo(string message)
         {
             while (true)
             {
-                if (!string.IsNullOrWhiteSpace(message))
-                    Console.WriteLine(message);
+                Console.WriteLine(message);
                 Console.Write(">> ");
-                string input = Console.ReadLine().Trim().ToLower();
+                string input = Console.ReadLine().ToLower();
 
-                if (input == "yes" || input == "y") return true;
-                if (input == "no" || input == "n") return false;
+                if (input == "yes") return true;
+                if (input == "no") return false;
 
                 Console.Clear();
-                Console.WriteLine("Choose Yes or No answers only (type yes or no).");
+                Console.WriteLine("Yes or no answers only...\n");
             }
         }
     }

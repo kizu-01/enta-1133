@@ -18,11 +18,10 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
         }
 
         /// <summary>
-        /// Do a roll for a chosen die and pause until Enter is pressed.
+        /// Does a turn: choice + roll
         /// </summary>
         public int DoTurn(int chosenSides)
         {
-            Console.WriteLine();
             Helper.Typewrite($"{player.Name} steps up to roll the {chosenSides}-sided die...");
             int roll = dice.Roll(chosenSides);
             Helper.Typewrite($"And rolls a {roll}!");

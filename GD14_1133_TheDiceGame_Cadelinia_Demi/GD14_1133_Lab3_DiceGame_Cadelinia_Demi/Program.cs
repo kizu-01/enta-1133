@@ -6,13 +6,24 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi
     {
         static void Main(string[] args)
         {
-            GameManager gm = new GameManager();
+            GameManager game = new GameManager();
 
-            // Show intro + ask player name + instructions once
-            gm.ShowIntroAndInstructions();
+            while (true)
+            {
+                Console.Clear(); // Clear before starting each game
+                game.Play();
 
-            // Start dungeon exploration (will loop until player chooses to exit or play again after defeat)
-            gm.StartDungeon();
+                // Ask if the player wants to play again
+                if (!InputHandler.GetYesNo("Do you want to play again? [Yes/No]"))
+                {
+                    Console.WriteLine();
+                    
+                    // Goodbye message
+                    Console.WriteLine();
+                    Helper.Typewrite("The Chance thanks you for playing DI3 FOR A CHANCE. Until then, mortal. Farewell!");
+                    break;
+                }
+            }
         }
     }
 }
