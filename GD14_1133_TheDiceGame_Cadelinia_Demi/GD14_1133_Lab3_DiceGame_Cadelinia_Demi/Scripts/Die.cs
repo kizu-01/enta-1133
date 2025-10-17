@@ -8,12 +8,13 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
 {
     internal class Die
     {
-        private Random rd = new Random(); 
-        
+        private Random rnd = new Random();
+
         // Roll a die with the given sides
-        internal int Roll(int sides) 
-        { 
-            return rd.Next(1, sides + 1); 
+        public int Roll(int sides)
+        {
+            if (sides < 1) throw new ArgumentException("Die must have at least one side.");
+            return rnd.Next(1, sides + 1);
         }
     }
 }
