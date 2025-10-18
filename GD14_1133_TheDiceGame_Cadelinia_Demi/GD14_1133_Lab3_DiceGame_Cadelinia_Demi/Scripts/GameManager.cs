@@ -11,11 +11,11 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
     internal class GameManager
     {
         private Player player;
-        private Player computer; // used for standalone battles or opponent templates
         private Die dice = new Die();
         private Random rd = new Random();
         private AIController ai = new AIController();
         private bool playerDefeated = false;
+        private Dungeon dungeon; // class-level instance
 
         // Track encounter (combat) wins
         private int encountersWon = 0;
@@ -25,76 +25,32 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
 
         public void ShowIntroAndInstructions()
         {
-            FullIntro();
-        }
-
-        private void FullIntro()
-        {
-            string asciiSky = @"
-.         _  .          .          .    +     .          .          .      .
-        .(_)          .            .            .            .       :
-        .   .      .    .     .     .    .      .   .      . .  .  -+-        .
-          .           .   .        .           .          /         :  .
-    . .        .  .      /.   .      .    .     .     .  / .      . ' .
-        .  +       .    /     .          .          .   /      .
-       .            .  /         .            .        *   .         .     .
-      .   .      .    *     .     .    .      .   .       .  .
-          .           .           .           .           .         +  .
-  . .        .  .       .   .      .    .     .     .    .      .   .
-
- .   +      .          ___/\_._/~~\_...__/\__.._._/~\        .         .   .
-       .          _.--'                              `--./\          .   .
-           /~~\/~\                                         `-/~\_            .
- .      .-'                                                      `-/\_
-  _/\.-'                                                          __/~\/\-.__
-.'                                                                           `.
-";
-            Console.WriteLine(asciiSky);
-            Console.WriteLine();
-
+            // Move ascii/UI prints to UI class
+            UI.ShowSkyArt();
             Helper.Typewrite("In the digital world of Demi's ENTAverse, the three lucky dice lived in harmony. ");
-            Helper.Typewrite("Then, everything changed when the celestial hosts called The Chance attacked.");
-            Helper.Typewrite("Only you, a mere mortal, could stop them. With the help of the lucky dice, ");
-            Helper.Typewrite("YOU can save the world. And The Chance shouts...");
+            Helper.Typewrite("Then, everything changed when the celestial hosts called The Chance took over.");
+            Helper.Typewrite("Only you, a mere mortal, could stop the cursed beasts lingering the dungeon.");
+            Helper.Typewrite("With the help of the lucky dice transformed into powerful weapons...");
+            Helper.Typewrite("YOU can save the world. And a voice chants to you-");
             Console.WriteLine();
             Helper.Pause();
             Console.Clear();
 
-            string asciiDice = @"
-                                             .-------.    ______
-                                            /   o   /|   /\     \
-                                           /_______/o|  /o \  o  \
-                                           | o     | | /   o\_____\
-                                           |   o   |o/ \o   /o    /
-                                           |     o |/   \ o/  o  /
-                                           '-------'     \/____o/
-";
-            Console.WriteLine(asciiDice);
-
-            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
-            Console.WriteLine();
-            Console.WriteLine("                                                 Welcome to                                                      ");
-            Console.WriteLine();
-            Console.WriteLine("██████  ██ ██████      ███████  ██████  ██████       █████       ██████ ██   ██  █████  ███    ██  ██████ ███████ ");
-            Console.WriteLine("██   ██ ██      ██     ██      ██    ██ ██   ██     ██   ██     ██      ██   ██ ██   ██ ████   ██ ██      ██   ");
-            Console.WriteLine("██   ██ ██  █████      █████   ██    ██ ██████      ███████     ██      ███████ ███████ ██ ██  ██ ██      █████   ");
-            Console.WriteLine("██   ██ ██      ██     ██      ██    ██ ██   ██     ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██      ██      ");
-            Console.WriteLine("██████  ██ ██████      ██       ██████  ██   ██     ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████ ███████");
-            Console.WriteLine();
-            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
-            Console.WriteLine();
+            UI.ShowDiceArt();
+            UI.ShowTitleBanner();
 
             Helper.Typewrite("The Chance wants to know your name: ");
             Console.Write(">> ");
             string name = Console.ReadLine().Trim();
-            if (string.IsNullOrEmpty(name)) name = "Player";
+            if (string.IsNullOrEmpty(name)) name = "Mortal";
             player = new Player(name);
-            computer = new Player("Opponent");
             Console.WriteLine();
         }
 
         private bool StartGamePrompt()
         {
+            Helper.Typewrite($"Okay, {player.Name}.");
+            Console.WriteLine();
             Helper.Typewrite("Why not play DI3 FOR A CHANCE?");
             Console.WriteLine();
             return InputHandler.GetYesNo("Are you ready to play? [Yes/No]");
@@ -108,13 +64,12 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             Console.WriteLine();
             Console.WriteLine("How To Play:");
             Console.WriteLine("1. Explore the mysterious dungeon.");
-            Console.WriteLine("2. Search Treasure Rooms to find dice (d7, d12, d21).");
-            Console.WriteLine("3. Entering an Encounter room lets you decide to fight (you must have at least a die at hand).");
-            Console.WriteLine("4. Battles have up to 3 rounds depending on how many dice you own (1 = 1 round, 2 = 2 rounds, 3 = 3 rounds).");
-            Console.WriteLine("5. When you use a die, it will be removed from your pool.");
-            Console.WriteLine("6. During battle, The Chance uses the odds to decide higher/lower value and turn order each round.");
-            Console.WriteLine("7. If you win the match, you get to keep your dice you currently possess. If you lose, it's game over.");
-            Console.WriteLine("5. Win the game by defeating all 3 opponents lingering the dungeon!");
+            Console.WriteLine("2. Search Treasure Rooms to find dice-weapons (d7, d12, d21).");
+            Console.WriteLine("3. Entering an Encounter room lets you decide to fight (you must have at least a weapon).");
+            Console.WriteLine("4. Battles are HP-based. Each weapon roll deals damage equal to its dice roll.");
+            Console.WriteLine("5. Weapons are reusable. Potions are consumable.");
+            Console.WriteLine("6. Wrong input on chosen weapon during battle will default you to use the first weapon obtained.");
+            Console.WriteLine("7. Win the game by defeating all 3 opponents lingering the dungeon!");
             Console.WriteLine();
             Helper.Typewrite("May the odds be in your favor. Let the game begin!");
             Console.WriteLine();
@@ -136,7 +91,8 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
                 Console.WriteLine("Great, Let's Play!");
                 Instructions();
 
-                Dungeon dungeon = new Dungeon(3, 3, player);
+                // Assign to class-level dungeon to give access for other methods (Battle)
+                dungeon = new Dungeon(3, 3, player);
                 GenerateRandomDungeon(dungeon);
 
                 bool inSession = true;
@@ -146,6 +102,9 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
                     dungeon.DisplayMap();
                     Room current = dungeon.CurrentRoom();
                     current.OnEnteredRoom();
+
+                    Console.WriteLine();
+                    UI.ShowHP(player.Name, player.HP, player.MaxHP);
 
                     bool chosen = false;
                     while (!chosen)
@@ -188,6 +147,7 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
 
                             case "3":
                                 ShowInventory();
+                                chosen = false; // remain in the same room after inventory
                                 break;
 
                             case "4":
@@ -214,23 +174,7 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
         private void DisplayGameOver(ref bool inSession)
         {
             Console.Clear();
-            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
-            Console.WriteLine();
-            Console.WriteLine("   █████████    █████████   ██████   ██████ ██████████       ███████    █████   █████ ██████████ ███████████  ");
-            Console.WriteLine("  ███▒▒▒▒▒███  ███▒▒▒▒▒███ ▒▒██████ ██████ ▒▒███▒▒▒▒▒█     ███▒▒▒▒▒███ ▒▒███   ▒▒███ ▒▒███▒▒▒▒▒█▒▒███▒▒▒▒▒███ ");
-            Console.WriteLine(" ███     ▒▒▒  ▒███    ▒███  ▒███▒█████▒███  ▒███  █ ▒     ███     ▒▒███ ▒███    ▒███  ▒███  █ ▒  ▒███    ▒███ ");
-            Console.WriteLine("▒███          ▒███████████  ▒███▒▒███ ▒███  ▒██████      ▒███      ▒███ ▒███    ▒███  ▒██████    ▒██████████  ");
-            Console.WriteLine("▒███    █████ ▒███▒▒▒▒▒███  ▒███ ▒▒▒  ▒███  ▒███▒▒█      ▒███      ▒███ ▒▒███   ███   ▒███▒▒█    ▒███▒▒▒▒▒███ ");
-            Console.WriteLine("▒▒███  ▒▒███  ▒███    ▒███  ▒███      ▒███  ▒███ ▒   █   ▒▒███     ███   ▒▒▒█████▒    ▒███ ▒   █ ▒███    ▒███ ");
-            Console.WriteLine(" ▒▒█████████  █████   █████ █████     █████ ██████████    ▒▒▒███████▒      ▒▒███      ██████████ █████   █████");
-            Console.WriteLine("  ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒   ▒▒▒▒▒ ▒▒▒▒▒     ▒▒▒▒▒ ▒▒▒▒▒▒▒▒▒▒       ▒▒▒▒▒▒▒         ▒▒▒      ▒▒▒▒▒▒▒▒▒▒ ▒▒▒▒▒   ▒▒▒▒▒ ");
-            Console.WriteLine();
-            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
-            Console.WriteLine();
-            Helper.Typewrite("                  The chosen mortal has fallen, and the ENTAverse lives on in jeopardy.");
-            Console.WriteLine();
-            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
-            Console.WriteLine();
+            UI.ShowGameOver();
 
             if (InputHandler.GetYesNo("Do you want to play again? [Yes/No]"))
             {
@@ -249,15 +193,31 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
 
         private void GenerateRandomDungeon(Dungeon dungeon)
         {
+            // Provide dice values for weapons and names for encounter and treasure rooms
             var treasureNames = new[] { "Golden Cavern", "Crystal Trench", "Heaven's Vault" };
-            var treasureDice = new[] { 7, 12, 21 };
+            var treasureDice = new[] { 7, 12, 21 }; // used to decide weapon dice
             var encounterNames = new[] { "Lair of Misfortune", "Wretched Abyss", "Pandora's Chamber" };
 
             List<Room> roomsToPlace = new List<Room>();
+
+            // Treasure rooms rewards weapons while keeping dice sides mapping
             for (int i = 0; i < 3; i++)
-                roomsToPlace.Add(new TreasureRoom(treasureNames[i], treasureDice[i]));
+            {
+                // 7 -> dagger (d7), 12 -> longsword (d12), 21 -> sledgehammer (d21)
+                string weaponName = treasureDice[i] switch
+                {
+                    7 => "Dagger (d7)",
+                    12 => "Longsword (d12)",
+                    21 => "Sledgehammer (d21)",
+                    _ => $"Weapon (d{treasureDice[i]})"
+                };
+                roomsToPlace.Add(new TreasureRoom(treasureNames[i], treasureDice[i], weaponName));
+            }
+
+            // Encounter rooms
             for (int i = 0; i < 3; i++)
                 roomsToPlace.Add(new EncounterRoom(encounterNames[i], this));
+
             roomsToPlace.Add(new HealRoom("Sanctum of Renewal"));
             roomsToPlace.Add(new TrapRoom("Pit of Deceit"));
 
@@ -286,132 +246,224 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             }
         }
 
-        public bool Battle(Player opponent)
+        // HP-based battle using weapons (both player and opponent have HP)
+        public bool Battle(Player opponentTemplate)
         {
-            // Reset opponent each battle
+            // Create opponent instance with reusable default weapons
+            Player opponent = new Player("The Cursed Beast", 50);
             opponent.ResetPlayer(true);
-            opponent.AddDie(7);
-            opponent.AddDie(12);
-            opponent.AddDie(21);
+            // Give opponent similar weapons
+            opponent.AddItem(new Weapon("Enemy Dagger (d7)", 1, 7));
+            opponent.AddItem(new Weapon("Enemy Longsword (d12)", 1, 12));
+            opponent.AddItem(new Weapon("Enemy Sledgehammer (d21)", 1, 21));
+            opponent.ResetHP();
 
-            if (!player.HasDice())
+            // To certify player must have at least one weapon to fight
+            if (!player.HasWeapons())
             {
-                Helper.Typewrite("You have no dice in possession. You cannot enter battle!");
+                Helper.Typewrite("You have no weapons. You cannot enter battle!");
                 Helper.Pause();
                 playerDefeated = true;
                 return false;
             }
 
-            int rounds = Math.Min(3, player.DicePoolCount);
-            player.ResetScore();
-            opponent.ResetScore();
+            // To make sure player has HP
+            if (player.HP <= 0)
+            {
+                Helper.Typewrite("You have no HP left. You cannot fight!");
+                playerDefeated = true;
+                return false;
+            }
 
-            // Backup dice for tiebreakers
-            List<int> playerDiceBackup = new List<int>(player.DicePoolCopy);
+            UI.ShowMessage($"Battle begins: {player.Name} vs {opponent.Name}!");
+            Helper.Pause();
 
-            for (int round = 1; round <= rounds; round++)
+            // Random turn order display
+            bool playerStarts = rd.Next(2) == 0;
+            Helper.Typewrite(playerStarts ? $"{player.Name} will roll first this exchange." : $"{opponent.Name} will roll first this exchange.");
+            Helper.Pause();
+
+            while (!player.IsDead && !opponent.IsDead)
             {
                 Console.Clear();
-                Helper.Typewrite($"-----------------------------------------------------------------------------");
-                Console.WriteLine();
-                Helper.Typewrite($"Round {round}");
-                Console.WriteLine();
+                UI.ShowCombatStatus(player, opponent);
 
-                bool playerFirst = rd.Next(2) == 0;
-                int playerDie = 0, oppDie = 0;
-                int playerRoll = 0, oppRoll = 0;
-
-                if (playerFirst)
+                // Allow potions to be used before attack
+                if (player.GetConsumables().Count > 0)
                 {
-                    Helper.Typewrite($"{player.Name} rolls first!");
-                    Console.WriteLine();
-                    playerDie = PlayerChooseDie();
-                    player.RemoveDie(playerDie);
-                    playerRoll = new Turn(player, dice).DoTurn(playerDie);
+                    Helper.Typewrite("Do you want to use a consumable before attacking?");
+                    if (InputHandler.GetYesNo("[Yes/No]"))
+                    {
+                        var consumables = player.GetConsumables();
+                        for (int i = 0; i < consumables.Count; i++)
+                        {
+                            Console.WriteLine($"{i + 1}) {consumables[i].DisplayName}");
+                        }
+                        Console.Write(">> ");
+                        int sel;
+                        if (!int.TryParse(Console.ReadLine().Trim(), out sel) || sel < 1 || sel > consumables.Count)
+                            sel = 1;
+                        int healed = player.UseConsumable(consumables[sel - 1], dice);
+                        Console.WriteLine();
+                        Helper.Typewrite($"You used {consumables[sel - 1].DisplayName} and restored {healed} HP!");
+                        Console.WriteLine();
+                        Helper.Pause();
+                    }
+                }
 
-                    oppDie = ai.ChooseDie(opponent.DicePoolCopy);
-                    opponent.RemoveDie(oppDie);
-                    oppRoll = new Turn(opponent, dice).DoTurn(oppDie);
+                Weapon playerWeapon = null;
+                Weapon opponentWeapon = null;
+
+                var playerWeapons = player.GetWeapons();
+                if (playerWeapons.Count == 0)
+                {
+                    Helper.Typewrite("You have no weapon to attack with.");
+                    Helper.Pause();
+                    playerDefeated = true;
+                    return false;
+                }
+
+                Console.WriteLine();
+                Helper.Typewrite("Choose your weapon:");
+                for (int i = 0; i < playerWeapons.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}) {playerWeapons[i].DisplayName} ({playerWeapons[i].DiceCount}d{playerWeapons[i].DiceSides})");
+                }
+                Console.Write(">> ");
+                int chosenIndex = 1;
+                if (!int.TryParse(Console.ReadLine().Trim(), out chosenIndex) || chosenIndex < 1 || chosenIndex > playerWeapons.Count)
+                {
+                    Console.WriteLine();
+                    Helper.Typewrite("Invalid selection, defaulting to first weapon.");
+                    chosenIndex = 1;
+                }
+                playerWeapon = playerWeapons[chosenIndex - 1];
+
+                opponentWeapon = ai.ChooseWeapon(opponent.GetWeapons());
+
+                var turnPlayer = new Turn(player, dice);
+                var turnOpp = new Turn(opponent, dice);
+
+                // Turn order: show who goes first (playerStarts random per battle start)
+                Console.WriteLine();
+                int playerRoll = 0, oppRoll = 0;
+                if (playerStarts)
+                {
+                    playerRoll = turnPlayer.DoUseRaw(playerWeapon);
+                    Helper.Typewrite($"{player.Name} rolled: {playerRoll}");
+                    Console.WriteLine();
+                    oppRoll = turnOpp.DoUseRaw(opponentWeapon);
+                    Helper.Typewrite($"{opponent.Name} rolled: {oppRoll}");
+                    Console.WriteLine();
                 }
                 else
                 {
-                    Helper.Typewrite($"{opponent.Name} rolls first!");
+                    oppRoll = turnOpp.DoUseRaw(opponentWeapon);
+                    Helper.Typewrite($"{opponent.Name} rolled: {oppRoll}");
                     Console.WriteLine();
-                    oppDie = ai.ChooseDie(opponent.DicePoolCopy);
-                    opponent.RemoveDie(oppDie);
-                    oppRoll = new Turn(opponent, dice).DoTurn(oppDie);
-
-                    playerDie = PlayerChooseDie();
-                    player.RemoveDie(playerDie);
-                    playerRoll = new Turn(player, dice).DoTurn(playerDie);
+                    playerRoll = turnPlayer.DoUseRaw(playerWeapon);
+                    Helper.Typewrite($"{player.Name} rolled: {playerRoll}");
+                    Console.WriteLine();
                 }
 
-                string condition = ai.ChooseCondition();
-                Helper.Typewrite($"The odds have decided: {condition.ToUpper()} roll wins!");
+                // The odds: choose higher or lower for this exchange (after rolls)
+                bool higherWins = rd.Next(2) == 0;
+                Helper.Typewrite($"The odds have decided: {(higherWins ? "HIGHER" : "LOWER")} roll wins this exchange!");
+                Console.WriteLine();
 
-                // Handle tie score situations
+                // In case of tie, reroll until break (matching roll order)
                 while (playerRoll == oppRoll)
                 {
-                    Helper.Typewrite("It's a tie! Both sides will reroll their dice...");
-                    playerRoll = new Turn(player, dice).DoTurn(playerDie);
-                    oppRoll = new Turn(opponent, dice).DoTurn(oppDie);
-                    Helper.Typewrite($"Reroll Results = {player.Name}: {playerRoll} | {opponent.Name}: {oppRoll}");
+                    Helper.Typewrite("It's a tie! Both sides reroll their chosen weapons...");
+                    Console.WriteLine();
+                    if (playerStarts)
+                    {
+                        playerRoll = turnPlayer.DoUseRaw(playerWeapon);
+                        Helper.Typewrite($"{player.Name} rerolled: {playerRoll}");
+                        Console.WriteLine();
+                        oppRoll = turnOpp.DoUseRaw(opponentWeapon);
+                        Helper.Typewrite($"{opponent.Name} rerolled: {oppRoll}");
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        oppRoll = turnOpp.DoUseRaw(opponentWeapon);
+                        Helper.Typewrite($"{opponent.Name} rerolled: {oppRoll}");
+                        Console.WriteLine();
+                        playerRoll = turnPlayer.DoUseRaw(playerWeapon);
+                        Helper.Typewrite($"{player.Name} rerolled: {playerRoll}");
+                        Console.WriteLine();
+                    }
                 }
 
-                bool playerWins = (condition == "higher" && playerRoll > oppRoll) ||
-                                  (condition == "lower" && playerRoll < oppRoll);
+                bool playerWins = higherWins ? playerRoll > oppRoll : playerRoll < oppRoll;
 
                 if (playerWins)
                 {
-                    Helper.Typewrite($"{player.Name} wins this round!");
-                    player.AddPoint();
+                    Helper.Typewrite($"{player.Name} wins the exchange and deals {playerRoll} damage!");
+                    Console.WriteLine();
+                    opponent.TakeDamage(playerRoll);
                 }
                 else
                 {
-                    Helper.Typewrite($"{opponent.Name} wins this round!");
-                    opponent.AddPoint();
+                    Helper.Typewrite($"{opponent.Name} wins the exchange and deals {oppRoll} damage!");
+                    Console.WriteLine();
+                    player.TakeDamage(oppRoll);
                 }
 
                 Helper.Pause();
             }
 
             Console.Clear();
-            Helper.Typewrite($"-----------------------------------------------------------------------------");
-            Console.WriteLine();
-            Helper.Typewrite($"Final Score: {player.Name} {player.Score} - {opponent.Score} {opponent.Name}");
-            Console.WriteLine();
-            Console.WriteLine($"| | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |");
-            Console.WriteLine();
+            UI.ShowCombatStatus(player, opponent);
 
-            if (player.Score > opponent.Score)
+            if (!player.IsDead && opponent.IsDead)
             {
                 Helper.Typewrite($"{player.Name} wins the battle!");
-                Console.WriteLine();
-                Console.WriteLine($"-----------------------------------------------------------------------------");
                 encountersWon++;
 
-                // Restore dice used during battle
-                player.RestoreDicePool(playerDiceBackup);
+                // 50% chance drop big potion
+                if (rd.Next(100) < 50)
+                {
+                    var drop = new Consumable("Big Healing Potion (3d12)", 3, 12);
+                    player.AddItem(drop);
+                    Console.WriteLine();
+                    Helper.Typewrite($"You found a {drop.DisplayName} after the fight!");
+                    Console.WriteLine();
+                }
 
-                // Check for game completion
+                // Reset HealRooms to allow new potions after battle
+                if (dungeon != null)
+                {
+                    foreach (var room in dungeon.GetAllRooms().OfType<HealRoom>())
+                    {
+                        room.ResetTaken();
+                    }
+                }
+
+                Helper.Pause();
+
                 if (encountersWon >= 3)
                 {
-                    Console.WriteLine();
-                    Helper.Typewrite("═══════════════════════════════════════════════════════════════════════════");
-                    Console.WriteLine();
-                    Helper.Typewrite("Congratulations! You have defeated all opponents and conquered DI3!");
-                    Helper.Typewrite("The world of the ENTAverse is safe once more!");
-                    Console.WriteLine();
-                    Helper.Typewrite("═══════════════════════════════════════════════════════════════════════════");
-                    Console.WriteLine();
+                    Console.Clear();
+                    UI.ShowCongratulations();
+                    Helper.Pause();
+
+                    Console.Clear();
+                    UI.ShowClosingThanks();
+                    Helper.Pause();
 
                     if (InputHandler.GetYesNo("Do you want to play again? [Yes/No]"))
                     {
+                        // Reset everything properly
                         player.ResetPlayer(true);
                         encountersWon = 0;
                         playerDefeated = false;
+
                         Console.Clear();
                         Helper.Typewrite("Why not play DI3 FOR A CHANCE?");
+
+                        return true;
                     }
                     else
                     {
@@ -424,38 +476,103 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             }
             else
             {
-                Helper.Typewrite("Opponent wins the battle!");
+                Helper.Typewrite($"{player.Name} was defeated. You lost the battle.");
                 playerDefeated = true;
+                Helper.Pause();
                 return false;
             }
         }
 
-        private int PlayerChooseDie()
+        // Show inventory and can use consumables and equip weapons in exploration
+        private void ShowInventory()
         {
-            string choice;
-            bool valid = false;
-            int selectedDie = 0;
-
-            do
+            bool done = false;
+            while (!done)
             {
-                Helper.Typewrite($"{player.Name}, choose your die:");
-                foreach (int d in player.DicePoolCopy) Console.WriteLine($"- d{d}");
-                Console.Write(">> ");
-                choice = Console.ReadLine().ToLower().Trim();
-
-                if (choice.StartsWith("d") && int.TryParse(choice.Substring(1), out int sides) && player.DicePoolCopy.Contains(sides))
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine("═══════════════════════════════════");
+                Console.WriteLine("            INVENTORY");
+                Console.WriteLine("═══════════════════════════════════");
+                Console.WriteLine();
+                if (player.Inventory.Count == 0)
                 {
-                    selectedDie = sides;
-                    valid = true;
+                    Console.WriteLine("Your inventory is empty.");
                 }
                 else
                 {
-                    Console.Clear();
-                    Console.WriteLine("Invalid choice, please try again.");
+                    int i = 1;
+                    foreach (var it in player.Inventory)
+                    {
+                        Console.WriteLine($"{i}) {it.DisplayName}");
+                        i++;
+                    }
                 }
-            } while (!valid);
+                Console.WriteLine();
+                Console.WriteLine("Actions:");
+                Console.WriteLine("1) Use Consumable");
+                Console.WriteLine("2) Back");
+                Console.Write(">> ");
+                string choice = Console.ReadLine().Trim();
 
-            return selectedDie;
+                switch (choice)
+                {
+                    case "1":
+                        var pots = player.GetConsumables();
+                        if (pots.Count == 0)
+                        {
+                            Helper.Typewrite("You have no consumables.");
+                            Helper.Pause();
+                        }
+                        else
+                        {
+                            Helper.Typewrite("Choose a consumable to use:");
+                            for (int i = 0; i < pots.Count; i++)
+                                Console.WriteLine($"{i + 1}) {pots[i].DisplayName}");
+                            Console.Write(">> ");
+                            if (int.TryParse(Console.ReadLine().Trim(), out int sel) && sel >= 1 && sel <= pots.Count)
+                            {
+                                int healed = player.UseConsumable(pots[sel - 1], dice);
+
+                                Console.WriteLine();
+
+                                if (healed == -1)
+                                {
+                                    // HP full: don’t show “used” message
+                                    Helper.Typewrite("Your HP is full! The potion remains in your inventory.");
+                                }
+                                else if (healed > 0)
+                                {
+                                    // Normal heal
+                                    Helper.Typewrite($"You used {pots[sel - 1].DisplayName} and restored {healed} HP!");
+                                    Helper.Typewrite($"Current HP: {player.HP}/{player.MaxHP}");
+                                }
+                                else
+                                {
+                                    // In case something weird happens
+                                    Helper.Typewrite("No healing occurred.");
+                                }
+
+                                Helper.Pause();
+                            }
+                            else
+                            {
+                                Helper.Typewrite("Invalid selection.");
+                                Helper.Pause();
+                            }
+                        }
+                        break;
+
+                    case "2":
+                        done = true;
+                        break;
+
+                    default:
+                        Helper.Typewrite("Invalid choice.");
+                        Helper.Pause();
+                        break;
+                }
+            }
         }
 
         private string AskDirection()
@@ -478,33 +595,6 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
                     Console.WriteLine("Invalid input. Defaulting to stay in place.");
                     return "none";
             }
-        }
-
-        private void ShowInventory()
-        {
-            Console.WriteLine();
-            Console.WriteLine("═══════════════════════════════════");
-            Console.WriteLine("            INVENTORY");
-            Console.WriteLine("═══════════════════════════════════");
-
-            if (player.DicePoolCount == 0)
-            {
-                Console.WriteLine();
-                Console.WriteLine("Your inventory is empty.");
-                Console.WriteLine();
-            }
-            else
-            {
-                Console.WriteLine();
-                foreach (int die in player.DicePoolCopy)
-                    Console.WriteLine($"- d{die}");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("═══════════════════════════════════");
-            Console.WriteLine();
-            Console.WriteLine("- Press Enter to return -");
-            Console.ReadLine();
         }
     }
 }

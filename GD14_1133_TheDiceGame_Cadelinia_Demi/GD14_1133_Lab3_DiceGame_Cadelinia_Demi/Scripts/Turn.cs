@@ -18,17 +18,34 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
         }
 
         /// <summary>
-        /// Do a roll for a chosen die and pause until Enter is pressed.
+        /// Used to roll a weapon (or consumable) and show message. Returns displayed result.
         /// </summary>
-        public int DoTurn(int chosenSides)
+        public int DoUse(Item item)
         {
-            Console.WriteLine();
-            Helper.Typewrite($"{player.Name} steps up to roll the {chosenSides}-sided die...");
-            int roll = dice.Roll(chosenSides);
-            Helper.Typewrite($"And rolls a {roll}!");
-            Console.WriteLine();
+            System.Console.WriteLine();
+            Helper.Typewrite($"{player.Name} uses {item.DisplayName}...");
+            int result = item.Use(dice);
+            if (item is Weapon)
+            {
+                Helper.Typewrite($"It deals {result} damage!");
+            }
+            else
+            {
+                Helper.Typewrite($"It restores {result} HP!");
+            }
+            System.Console.WriteLine();
             Helper.Pause();
-            return roll;
+            return result;
+        }
+
+        /// <summary>
+        /// Raw-use method that performs the roll but doesn't print big messages
+        /// good for simultaneous roll/compare pattern. Still returns result.
+        /// </summary>
+        public int DoUseRaw(Item item)
+        {
+            int result = item.Use(dice);
+            return result;
         }
     }
 }

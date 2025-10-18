@@ -13,7 +13,12 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
 
         public override void OnSearchedRoom(Player player)
         {
-            Helper.Typewrite("A hidden trap activates! Luckily, it does no damage this time...");
+            Helper.Typewrite("A hidden trap activates! You take some damage...");
+            // deal damage (1d7)
+            Die die = new Die();
+            int dmg = die.Roll(7);
+            player.TakeDamage(dmg);
+            Helper.Typewrite($"You took {dmg} damage. Current HP: {player.HP}/{player.MaxHP}");
             Helper.Pause();
         }
 
@@ -24,7 +29,7 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
 
         public override void OnEnteredRoom()
         {
-            Console.WriteLine(RoomDescription());
+            System.Console.WriteLine(RoomDescription());
         }
     }
 }

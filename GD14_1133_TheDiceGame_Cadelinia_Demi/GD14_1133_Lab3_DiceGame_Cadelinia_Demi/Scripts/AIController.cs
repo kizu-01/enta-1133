@@ -10,20 +10,28 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
     {
         private Random rd = new Random();
 
-        public int ChooseDie(List<int> availableDice)
+        // Choose a weapon from available weapon list
+        public Weapon ChooseWeapon(List<Weapon> availableWeapons)
         {
-            if (availableDice == null || availableDice.Count == 0)
-                throw new InvalidOperationException("AI has no dice available.");
-
-            int idx = rd.Next(availableDice.Count);
-            int chosen = availableDice[idx];
-            Helper.Typewrite($"Opponent chooses a d{chosen}...");
+            Console.WriteLine();
+            if (availableWeapons == null || availableWeapons.Count == 0)
+                return null;
+            int idx = rd.Next(availableWeapons.Count);
+            var chosen = availableWeapons[idx];
+            Helper.Typewrite($"Opponent chooses {chosen.DisplayName}...");
             return chosen;
         }
 
-        public string ChooseCondition()
+        // Decide action (attack or use potion if it exists)
+        public string ChooseAction(Player aiPlayer)
         {
-            return rd.Next(2) == 0 ? "higher" : "lower";
+            // If AI has consumable and low HP, might choose to heal occasionally
+            var pots = aiPlayer.GetConsumables();
+            if (aiPlayer.HP < aiPlayer.MaxHP / 3 && pots.Count > 0 && rd.Next(100) < 40)
+            {
+                return "potion";
+            }
+            return "attack";
         }
     }
 }

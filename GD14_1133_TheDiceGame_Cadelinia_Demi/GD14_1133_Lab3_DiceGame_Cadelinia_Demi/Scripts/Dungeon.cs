@@ -119,5 +119,14 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             Console.WriteLine("+");
             Console.WriteLine();
         }
+
+        // Return all rooms in the dungeon as an enumerable
+        public IEnumerable<Room> GetAllRooms()
+        {
+            for (int i = 0; i < Rows; i++)
+                for (int j = 0; j < Cols; j++)
+                    if (Grid[i, j] != null)
+                        yield return Grid[i, j];
+        }
     }
 }

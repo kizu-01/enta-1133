@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
 {
+    // Hollow Room (Spawn point)
     internal class EmptyRoom : Room
     {
         public EmptyRoom(string name) : base(name) { }

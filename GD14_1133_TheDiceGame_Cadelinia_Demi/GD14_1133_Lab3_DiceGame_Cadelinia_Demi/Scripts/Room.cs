@@ -24,7 +24,7 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
 
         public virtual void OnEnteredRoom()
         {
-            Console.WriteLine();
+            System.Console.WriteLine();
             if (!Visited)
             {
                 Helper.Typewrite($"You entered {Name}. {RoomDescription()}");
@@ -39,12 +39,12 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
         // return room description text
         public abstract string RoomDescription();
 
-        // called when player chooses "search"
+        // called when choosing "search"
         public abstract void OnSearchedRoom(Player player);
 
         public virtual void OnExitedRoom()
         {
-            Console.WriteLine($"You left {Name}...");
+            System.Console.WriteLine($"You left {Name}...");
         }
 
         // helper to reset visited

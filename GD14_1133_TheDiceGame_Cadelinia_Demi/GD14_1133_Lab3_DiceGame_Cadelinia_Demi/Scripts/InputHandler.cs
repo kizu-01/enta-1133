@@ -10,8 +10,8 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
     {
         /// <summary>
         /// Ask yes/no and return bool. Keeps looping until user types yes or no
-        /// Displays ">> " prompt and accepts yes/no
-        /// If message is provided, it prints it first
+        /// Shows ">> " prompt and accepts yes/no
+        /// If message is provided, it prints first
         /// </summary>
         public static bool GetYesNo(string message)
         {

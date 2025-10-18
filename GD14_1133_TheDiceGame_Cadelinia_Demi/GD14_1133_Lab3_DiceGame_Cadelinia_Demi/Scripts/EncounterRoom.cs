@@ -25,7 +25,7 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
         {
             Console.WriteLine();
 
-            //Prevents re-battle
+            // Prevent re-battle
             if (defeated)
             {
                 Helper.Typewrite("The place stays silent. The opponent has already been defeated.");
@@ -33,10 +33,10 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
                 return;
             }
 
-            // If player has no dice, they cannot fight
-            if (!player.HasDice())
+            // If player has no weapons, they cannot fight
+            if (!player.HasWeapons())
             {
-                Helper.Typewrite("You have no dice in possession. You cannot enter battle!");
+                Helper.Typewrite("You have no weapons. You cannot enter battle!");
                 Helper.Pause();
                 return;
             }
@@ -48,10 +48,8 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
                 return;
             }
 
-            // Let GameManager handle the battle of opponent player to it
-            Player opponent = new Player("Opponent");
-            bool playerWon = gm.Battle(opponent);
-            Console.WriteLine();
+            // Let GameManager handle the battle
+            bool playerWon = gm.Battle(new Player("Opponent", 50));
 
             if (playerWon)
             {
@@ -63,7 +61,7 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
                 Helper.Typewrite("You were defeated... The Chance frowns upon your fate.");
             }
 
-            // Pause to better see the outcome (prevents sudden jump to the next action)
+            // Pause to better see the outcome
             Helper.Pause();
         }
     }
