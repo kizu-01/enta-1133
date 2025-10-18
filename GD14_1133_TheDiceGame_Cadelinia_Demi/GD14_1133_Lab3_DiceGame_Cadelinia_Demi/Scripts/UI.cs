@@ -1,0 +1,211 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
+{
+    internal static class UI
+    {
+        // Title/Intro art (moved from GameManager)
+        public static void ShowSkyArt()
+        {
+            string asciiSky = @"
+.         _  .          .          .    +     .          .          .      .
+        .(_)          .            .            .            .       :
+        .   .      .    .     .     .    .      .   .      . .  .  -+-        .
+          .           .   .        .           .          /         :  .
+    . .        .  .      /.   .      .    .     .     .  / .      . ' .
+        .  +       .    /     .          .          .   /      .
+       .            .  /         .            .        *   .         .     .
+      .   .      .    *     .     .    .      .   .       .  .
+          .           .           .           .           .         +  .
+  . .        .  .       .   .      .    .     .     .    .      .   .
+
+ .   +      .          ___/\_._/~~\_...__/\__.._._/~\        .         .   .
+       .          _.--'                              `--./\          .   .
+           /~~\/~\                                         `-/~\_            .
+ .      .-'                                                      `-/\_
+  _/\.-'                                                          __/~\/\-.__
+.'                                                                           `.
+";
+            Console.WriteLine(asciiSky);
+        }
+
+        public static void ShowDiceArt()
+        {
+            string asciiDice = @"
+                                             .-------.    ______
+                                            /   o   /|   /\     \
+                                           /_______/o|  /o \  o  \
+                                           | o     | | /   o\_____\
+                                           |   o   |o/ \o   /o    /
+                                           |     o |/   \ o/  o  /
+                                           '-------'     \/____o/
+";
+            Console.WriteLine(asciiDice);
+        }
+
+        // Show game title
+        public static void ShowTitleBanner()
+        {
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+            Console.WriteLine();
+            Console.WriteLine("                                                 Welcome to                                                      ");
+            Console.WriteLine();
+            Console.WriteLine("██████  ██ ██████      ███████  ██████  ██████       █████       ██████ ██   ██  █████  ███    ██  ██████ ███████ ");
+            Console.WriteLine("██   ██ ██      ██     ██      ██    ██ ██   ██     ██   ██     ██      ██   ██ ██   ██ ████   ██ ██      ██   ");
+            Console.WriteLine("██   ██ ██  █████      █████   ██    ██ ██████      ███████     ██      ███████ ███████ ██ ██  ██ ██      █████   ");
+            Console.WriteLine("██   ██ ██      ██     ██      ██    ██ ██   ██     ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██      ██      ");
+            Console.WriteLine("██████  ██ ██████      ██       ██████  ██   ██     ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████ ███████");
+            Console.WriteLine();
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+            Console.WriteLine();
+        }
+
+        // Show game over after player defeated
+        public static void ShowGameOver()
+        {
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+            Console.WriteLine();
+            Console.WriteLine("   █████████    █████████   ██████   ██████ ██████████       ███████    █████   █████ ██████████ ███████████  ");
+            Console.WriteLine("  ███▒▒▒▒▒███  ███▒▒▒▒▒███ ▒▒██████ ██████ ▒▒███▒▒▒▒▒█     ███▒▒▒▒▒███ ▒▒███   ▒▒███ ▒▒███▒▒▒▒▒█▒▒███▒▒▒▒▒███ ");
+            Console.WriteLine(" ███     ▒▒▒  ▒███    ▒███  ▒███▒█████▒███  ▒███  █ ▒     ███     ▒▒███ ▒███    ▒███  ▒███  █ ▒  ▒███    ▒███ ");
+            Console.WriteLine("▒███          ▒███████████  ▒███▒▒███ ▒███  ▒██████      ▒███      ▒███ ▒███    ▒███  ▒██████    ▒██████████  ");
+            Console.WriteLine("▒███    █████ ▒███▒▒▒▒▒███  ▒███ ▒▒▒  ▒███  ▒███▒▒█      ▒███      ▒███ ▒▒███   ███   ▒███▒▒█    ▒███▒▒▒▒▒███ ");
+            Console.WriteLine("▒▒███  ▒▒███  ▒███    ▒███  ▒███      ▒███  ▒███ ▒   █   ▒▒███     ███   ▒▒▒█████▒    ▒███ ▒   █ ▒███    ▒███ ");
+            Console.WriteLine(" ▒▒█████████  █████   █████ █████     █████ ██████████    ▒▒▒███████▒      ▒▒███      ██████████ █████   █████");
+            Console.WriteLine("  ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒   ▒▒▒▒▒ ▒▒▒▒▒     ▒▒▒▒▒ ▒▒▒▒▒▒▒▒▒▒       ▒▒▒▒▒▒▒         ▒▒▒      ▒▒▒▒▒▒▒▒▒▒ ▒▒▒▒▒   ▒▒▒▒▒ ");
+            Console.WriteLine();
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+            Console.WriteLine();
+            Helper.Typewrite("                  The chosen mortal has fallen, and the ENTAverse lives on in jeopardy.");
+            Console.WriteLine();
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+            Console.WriteLine();
+        }
+
+        // Show congratulations after defeating all EncounterRooms
+        public static void ShowCongratulations()
+        {
+            Console.WriteLine("                                  **");
+            Console.WriteLine("                      *'       *       .  *   '.           * *");
+            Console.WriteLine("                                                                      '");
+            Console.WriteLine("                      * *'          *          *        '");
+            Console.WriteLine("                      .           *               |               /");
+            Console.WriteLine("                      '.         |    |      ' | '     *");
+            Console.WriteLine(@"                                             \*        \   \             /");
+            Console.WriteLine(@"                                   '          \     ' * |    | *        | ***");
+            Console.WriteLine(@"                                        *      `.       \   | *     / *'");
+            Console.WriteLine(@"                                          .                  \      |   \          / *");
+            Console.WriteLine(@"                                 * '  *     '      \      \   '.       |");
+            Console.WriteLine("                              -._            `                  / *");
+            Console.WriteLine("                        ' '      ``._ * '          .      '");
+            Console.WriteLine(@"                               * *\** .   .      *");
+            Console.WriteLine("                      * '        *    `-._                       .         _..:=' *");
+            Console.WriteLine("                                   .  '      *       *    *   .       _.:--'");
+            Console.WriteLine("                                *           .     .     *         .- '         *");
+            Console.WriteLine("                         .               '             . ' * *         .");
+            Console.WriteLine("                        * ___.-= --..-._ * '               '");
+            Console.WriteLine("                                                        * *");
+            Console.WriteLine("                                      * _.'  .'       `.        '  *             *");
+            Console.WriteLine("                           * *_.- '   .'            `.               *");
+            Console.WriteLine("                                         .'                       `._             *  '");
+            Console.WriteLine("                         '       '.       .  `.     .");
+            Console.WriteLine("                             .                      *                  `");
+            Console.WriteLine("                                     * '             '.");
+            Console.WriteLine("                           .                          *        .           * *");
+            Console.WriteLine("                                   *        .                                    '");
+            Console.WriteLine();
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+            Console.WriteLine();
+            Helper.Typewrite("            Congratulations! You have defeated the cursed beasts and beaten the odds against The Chance.");
+            Console.WriteLine();
+            Helper.Typewrite("                                      The ENTAverse is at peace once more.");
+            Console.WriteLine();
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+            Console.WriteLine();
+        }
+
+        // Show ending scene after victory
+        public static void ShowClosingThanks()
+        {
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+            Console.WriteLine();
+            Console.WriteLine("                         ╔╦╗┬ ┬┌─┐┌┐┌┬┌─┌─┐  ┌─┐┌─┐┬─┐  ╔═╗┬  ┌─┐┬ ┬┬┌┐┌┌─┐┬");
+            Console.WriteLine("                          ║ ├─┤├─┤│││├┴┐└─┐  ├┤ │ │├┬┘  ╠═╝│  ├─┤└┬┘│││││ ┬│");
+            Console.WriteLine("                          ╩ ┴ ┴┴ ┴┘└┘┴ ┴└─┘  └  └─┘┴└─  ╩  ┴─┘┴ ┴ ┴ ┴┘└┘└─┘o");
+            Console.WriteLine();
+            Console.WriteLine("██████  ██ ██████      ███████  ██████  ██████       █████       ██████ ██   ██  █████  ███    ██  ██████ ███████ ");
+            Console.WriteLine("██   ██ ██      ██     ██      ██    ██ ██   ██     ██   ██     ██      ██   ██ ██   ██ ████   ██ ██      ██   ");
+            Console.WriteLine("██   ██ ██  █████      █████   ██    ██ ██████      ███████     ██      ███████ ███████ ██ ██  ██ ██      █████   ");
+            Console.WriteLine("██   ██ ██      ██     ██      ██    ██ ██   ██     ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██      ██      ");
+            Console.WriteLine("██████  ██ ██████      ██       ██████  ██   ██     ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████ ███████");
+            Console.WriteLine();
+            Helper.Typewrite("              It was a pleasure fighting against the odds with you. I hope you enjoyed the game!");
+            Console.WriteLine();
+            Helper.Typewrite($"                                   | | Demi Chrissa Marie Cadelinia | |");
+            Console.WriteLine();
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+            Console.WriteLine();
+        }
+
+        // Shows a short HP line: "HP: current/max"
+        public static void ShowHP(string name, int hp, int maxHp)
+        {
+            Console.WriteLine($"HP: {hp}/{maxHp} - {name}");
+        }
+
+        // Show both combatants HP
+        public static void ShowCombatStatus(Player player, Player opponent)
+        {
+            Console.WriteLine();
+            Console.WriteLine("─────────────────────────────────────────────────────────────");
+            Console.WriteLine($"Player: {player.Name}   HP: {player.HP}/{player.MaxHP}");
+            Console.WriteLine($"Enemy : {opponent.Name}   HP: {opponent.HP}/{opponent.MaxHP}");
+            Console.WriteLine("─────────────────────────────────────────────────────────────");
+            Console.WriteLine();
+        }
+
+        //Show inventory of weapons and consumables
+        public static void ShowInventoryList(Player player)
+        {
+            Console.WriteLine();
+            Console.WriteLine("═══════════════════════════════════");
+            Console.WriteLine("            INVENTORY");
+            Console.WriteLine("═══════════════════════════════════");
+            Console.WriteLine();
+            if (player.Inventory.Count == 0)
+            {
+                Console.WriteLine("Your inventory is empty.");
+            }
+            else
+            {
+                int i = 1;
+                foreach (var it in player.Inventory)
+                {
+                    Console.WriteLine($"{i}) {it.DisplayName}");
+                    i++;
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine("═══════════════════════════════════");
+            Console.WriteLine();
+            Console.WriteLine("- Press Enter to return -");
+            Console.ReadLine();
+        }
+
+        public static void ShowMessage(string message)
+        {
+            Helper.Typewrite(message);
+        }
+
+        public static void ShowCentered(string text)
+        {
+            Console.WriteLine();
+            Console.WriteLine(text);
+            Console.WriteLine();
+        }
+    }
+}

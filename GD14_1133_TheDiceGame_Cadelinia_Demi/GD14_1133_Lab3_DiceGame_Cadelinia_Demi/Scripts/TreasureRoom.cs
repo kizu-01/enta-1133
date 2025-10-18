@@ -11,10 +11,13 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
     {
         private int dieValue;
         private bool taken = false;
+        private string weaponName;
 
-        public TreasureRoom(string name, int dieValue) : base(name)
+        // Accept a name and also the die sides and display weapon name
+        public TreasureRoom(string name, int dieValue, string weaponName) : base(name)
         {
             this.dieValue = dieValue;
+            this.weaponName = weaponName;
         }
 
         public override string RoomDescription()
@@ -27,14 +30,17 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
             Console.WriteLine();
             if (!taken)
             {
-                if (!player.DicePoolCopy.Contains(dieValue))
+                // create a Weapon item based on dieValue
+                if (!player.GetWeapons().Any(w => w.DiceSides == dieValue))
                 {
-                    Helper.Typewrite($"You found a d{dieValue} die!");
-                    player.AddDie(dieValue);
+                    // choose a die of dieValue for weapons (1d7,1d12,1d21)
+                    var weapon = new Weapon(weaponName, 1, dieValue);
+                    Helper.Typewrite($"You found a {weapon.DisplayName}!");
+                    player.AddItem(weapon);
                 }
                 else
                 {
-                    Helper.Typewrite($"You already obtained a d{dieValue} die here.");
+                    Helper.Typewrite($"You already obtained a d{dieValue} weapon here.");
                 }
                 taken = true;
             }

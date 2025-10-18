@@ -22,7 +22,7 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
         }
 
         /// <summary>
-        /// Pause until Enter for clean prompt
+        /// Pause until Enter for cleaner prompt
         /// </summary>
         public static void Pause()
         {

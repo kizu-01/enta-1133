@@ -10,64 +10,100 @@ namespace GD14_1133_Lab3_DiceGame_Cadelinia_Demi.Scripts
     {
         public string Name { get; private set; }
 
-        // Dice pool
-        public List<int> DicePool { get; private set; } = new List<int>();
+        // Health
+        public int MaxHP { get; private set; } = 50;
+        public int HP { get; private set; }
 
-        // For display and selection
-        public List<int> DicePoolCopy => new List<int>(DicePool);
+        // Inventory of items (weapons, consumables, etc.)
+        public List<Item> Inventory { get; private set; } = new List<Item>();
 
-        public int DicePoolCount => DicePool.Count;
-
-        // Score for battle rounds
+        // For backwards compatibility or debugging
         public int Score { get; private set; } = 0;
 
-        public Player(string name)
+        public Player(string name, int maxHP = 50)
         {
             Name = name;
+            MaxHP = maxHP;
+            HP = MaxHP;
         }
 
-        // Add a die to the pool
-        public void AddDie(int sides)
+        // Health methods
+        public void ResetHP()
         {
-            DicePool.Add(sides);
+            HP = MaxHP;
         }
 
-        // Remove a die from the pool (after rolling)
-        public void RemoveDie(int sides)
+        public void TakeDamage(int amount)
         {
-            DicePool.Remove(sides);
+            HP -= amount;
+            if (HP < 0) HP = 0;
         }
 
-        // Backup dice pool (used for tie-breaker restore)
-        public void RestoreDicePool(List<int> backup)
+        public void Heal(int amount)
         {
-            DicePool = new List<int>(backup);
+            HP += amount;
+            if (HP > MaxHP) HP = MaxHP;
         }
 
-        // Check if player has at least one die
-        public bool HasDice()
+        public bool IsDead => HP <= 0;
+
+        // Inventory methods
+        public void AddItem(Item item)
         {
-            return DicePool.Count > 0;
+            Inventory.Add(item);
         }
 
-        // Score handling
-        public void AddPoint()
+        public bool RemoveItem(Item item)
         {
-            Score++;
+            return Inventory.Remove(item);
         }
 
-        public void ResetScore()
+        public List<Weapon> GetWeapons()
         {
-            Score = 0;
+            return Inventory.OfType<Weapon>().ToList();
         }
 
-        // Reset the player completely
-        public void ResetPlayer(bool resetDice)
+        public List<Consumable> GetConsumables()
         {
-            Score = 0;
-            if (resetDice)
+            return Inventory.OfType<Consumable>().ToList();
+        }
+
+        public bool HasWeapons()
+        {
+            return GetWeapons().Count > 0;
+        }
+
+        // Use consumable which returns heal amount or 0 if nothing used
+        public int UseConsumable(Consumable c, Die die)
+        {
+            if (c == null) return 0;
+            if (!Inventory.Contains(c)) return 0;
+
+            // Prevent wasting potion if HP is full
+            if (HP >= MaxHP)
             {
-                DicePool.Clear();
+                return -1; // signal GameManager that potion wasn't used
+            }
+
+            int heal = c.Use(die);
+            Heal(heal);
+            // remove consumable
+            Inventory.Remove(c);
+            return heal;
+        }
+
+        // Score previously used in round-based system. Keep but not used in HP combat
+        public void AddPoint() => Score++;
+        public void ResetScore() => Score = 0;
+
+        // Reset player for new game
+        public void ResetPlayer(bool resetInventory)
+        {
+            ResetScore();
+            ResetHP();
+            if (resetInventory)
+            {
+                Inventory.Clear();
             }
         }
     }
